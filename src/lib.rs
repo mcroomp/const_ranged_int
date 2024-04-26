@@ -49,9 +49,11 @@ macro_rules! ranged_const {
 
             /// Safely increments the value and returns None if we hit
             /// the maximum value.
-            pub const fn increment(&self) -> Option<$type> {
+            pub const fn increment(&self) -> Option<Self> {
                 if self.value < MAX {
-                    Some(self.value + 1)
+                    Some(Self {
+                        value: self.value + 1,
+                    })
                 } else {
                     None
                 }
@@ -59,9 +61,11 @@ macro_rules! ranged_const {
 
             /// Safely decrements the value and returns None if we hit
             /// the maximum value.
-            pub const fn decrement(&self) -> Option<$type> {
+            pub const fn decrement(&self) -> Option<Self> {
                 if self.value > MIN {
-                    Some(self.value - 1)
+                    Some(Self {
+                        value: self.value - 1,
+                    })
                 } else {
                     None
                 }
