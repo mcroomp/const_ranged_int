@@ -38,6 +38,26 @@ macro_rules! ranged_const {
                 }
             }
 
+            /// Safely increments the value and returns None if we hit
+            /// the maximum value.
+            pub const fn increment(&self) -> Option<$type> {
+                if self.value < MAX {
+                    Some(self.value + 1)
+                } else {
+                    None
+                }
+            }
+
+            /// Safely decrements the value and returns None if we hit
+            /// the maximum value.
+            pub const fn decrement(&self) -> Option<$type> {
+                if self.value > MIN {
+                    Some(self.value - 1)
+                } else {
+                    None
+                }
+            }
+
             /// Convert a slice of u8 into an array of ConstRangedX. Useful for const initialization, eg
             ///  ```const CONTARRAY : [ConstRangedX<1,10>;5] = ConstRangedX::<1,10>::into_array([1,2,3,4,5]);
             /// will panic if any value is out of range
@@ -77,7 +97,7 @@ fn test_ranged_const_u32() {
     assert_eq!(VALUE.value(), 5);
 
     const CONTARRAY: [ConstRangedU8<1, 10>; 5] =
-    ConstRangedU8::<1, 10>::into_array([1, 2, 3, 4, 5]);
+        ConstRangedU8::<1, 10>::into_array([1, 2, 3, 4, 5]);
     for i in 0..5 {
         assert_eq!(CONTARRAY[i].value, i as u8 + 1);
     }
