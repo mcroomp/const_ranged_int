@@ -1,6 +1,6 @@
-# ranged_const_int
+# const_ranged_int
 
-`ranged_const_int` is a very simple Rust crate provides ranged constant values. It allows you to define constant values within a specific (inclusive) range.
+`const_ranged_int` is a very simple Rust crate provides ranged constant values. It allows you to define constant values within a specific (inclusive) range.
 The ```new``` function will assert that the value is within range, which is optimized out by the compiler.
 
 This crate is not very ambitious, it is designed to be used for lookup tables that have constrained values. For example, if you had a lookup table that 
@@ -22,7 +22,7 @@ ranged_const = "0.1.0"
 Then, in your Rust code:
 
 ```rust
-use ranged_const_int::RangedConstU8;
+use const_ranged_int::RangedConstU8;
 
 // single constant (panics at compile time if values are out of range)
 const VALUE: RangedConstU8<1, 10> = RangedConstU8::<1, 10>::new(5);
