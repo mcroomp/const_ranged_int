@@ -38,8 +38,8 @@ macro_rules! ranged_const {
                 }
             }
 
-            /// Convert a slice of u8 into an array of RangedConstU8. Useful for const initialization, eg
-            ///  ```const CONTARRAY : [RangedConstU8<1,10>;5] = RangedConstU8::<1,10>::into_array(&[1,2,3,4,5]);
+            /// Convert a slice of u8 into an array of ConstRangedX. Useful for const initialization, eg
+            ///  ```const CONTARRAY : [ConstRangedX<1,10>;5] = ConstRangedX::<1,10>::into_array(&[1,2,3,4,5]);
             /// will panic if any value is out of range
             pub const fn into_array<const N: usize>(a: &[$type; N]) -> [Self; N] {
                 let mut r = [Self::new(MIN); N];
@@ -54,30 +54,34 @@ macro_rules! ranged_const {
     };
 }
 
-ranged_const!(RangedConstU32, u32);
-ranged_const!(RangedConstU64, u64);
-ranged_const!(RangedConstU16, u16);
-ranged_const!(RangedConstU8, u8);
+ranged_const!(ConstRangedU128, u128);
+ranged_const!(ConstRangedU64, u64);
+ranged_const!(ConstRangedU32, u32);
+ranged_const!(ConstRangedU16, u16);
+ranged_const!(ConstRangedU8, u8);
+ranged_const!(ConstRangedUSize, usize);
 
+ranged_const!(ConstRangedI128, i128);
+ranged_const!(ConstRangedI64, i64);
 ranged_const!(RangedConstI32, i32);
-ranged_const!(RangedConstI64, i64);
 ranged_const!(RangedConstI16, i16);
 ranged_const!(RangedConstI8, i8);
+ranged_const!(RangedConstISize, isize);
 
 #[test]
 fn test_ranged_const_u32() {
-    let value = RangedConstU8::<1, 10>::new(5);
+    let value = ConstRangedU8::<1, 10>::new(5);
     assert_eq!(value.value(), 5);
 
-    const VALUE: RangedConstU8<1, 10> = RangedConstU8::<1, 10>::new(5);
+    const VALUE: ConstRangedU8<1, 10> = ConstRangedU8::<1, 10>::new(5);
     assert_eq!(VALUE.value(), 5);
 
-    const CONTARRAY: [RangedConstU8<1, 10>; 5] =
-        RangedConstU8::<1, 10>::into_array(&[1, 2, 3, 4, 5]);
+    const CONTARRAY: [ConstRangedU8<1, 10>; 5] =
+    ConstRangedU8::<1, 10>::into_array(&[1, 2, 3, 4, 5]);
     for i in 0..5 {
         assert_eq!(CONTARRAY[i].value, i as u8 + 1);
     }
 
-    let result = std::panic::catch_unwind(|| RangedConstU8::<1, 10>::into_array(&[1, 2, 3, 4, 11]));
+    let result = std::panic::catch_unwind(|| ConstRangedU8::<1, 10>::into_array(&[1, 2, 3, 4, 11]));
     assert!(result.is_err());
 }
