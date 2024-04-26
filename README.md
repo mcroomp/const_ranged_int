@@ -16,7 +16,7 @@ Add this crate to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-ranged_const = "0.1.0"
+ranged_const = "0.1"
 ```
 
 Then, in your Rust code:
