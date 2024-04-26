@@ -29,7 +29,7 @@ const VALUE: RangedConstU8<1, 10> = RangedConstU8::<1, 10>::new(5);
 
 // array of constants (panics at compile time if values are out of range)
 const CONTARRAY: [RangedConstU8<1, 10>; 5] =
-       RangedConstU8::<1, 10>::into_array(&[1, 2, 3, 4, 5]);
+       RangedConstU8::<1, 10>::into_array([1, 2, 3, 4, 5]);
 
 
 println!("{}", VALUE.value());

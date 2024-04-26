@@ -39,9 +39,9 @@ macro_rules! ranged_const {
             }
 
             /// Convert a slice of u8 into an array of ConstRangedX. Useful for const initialization, eg
-            ///  ```const CONTARRAY : [ConstRangedX<1,10>;5] = ConstRangedX::<1,10>::into_array(&[1,2,3,4,5]);
+            ///  ```const CONTARRAY : [ConstRangedX<1,10>;5] = ConstRangedX::<1,10>::into_array([1,2,3,4,5]);
             /// will panic if any value is out of range
-            pub const fn into_array<const N: usize>(a: &[$type; N]) -> [Self; N] {
+            pub const fn into_array<const N: usize>(a: [$type; N]) -> [Self; N] {
                 let mut r = [Self::new(MIN); N];
                 let mut i = 0;
                 while i < N {
@@ -77,11 +77,11 @@ fn test_ranged_const_u32() {
     assert_eq!(VALUE.value(), 5);
 
     const CONTARRAY: [ConstRangedU8<1, 10>; 5] =
-    ConstRangedU8::<1, 10>::into_array(&[1, 2, 3, 4, 5]);
+    ConstRangedU8::<1, 10>::into_array([1, 2, 3, 4, 5]);
     for i in 0..5 {
         assert_eq!(CONTARRAY[i].value, i as u8 + 1);
     }
 
-    let result = std::panic::catch_unwind(|| ConstRangedU8::<1, 10>::into_array(&[1, 2, 3, 4, 11]));
+    let result = std::panic::catch_unwind(|| ConstRangedU8::<1, 10>::into_array([1, 2, 3, 4, 11]));
     assert!(result.is_err());
 }
