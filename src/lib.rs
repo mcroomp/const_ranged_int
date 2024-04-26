@@ -27,6 +27,15 @@ macro_rules! ranged_const {
                 Self { value }
             }
 
+            /// Checks the value against the range and returns None if it is out of range
+            pub const fn check_range(value: $type) -> Option<Self> {
+                if value < MIN || value > MAX {
+                    None
+                } else {
+                    Some(Self { value })
+                }
+            }
+
             /// Get the value of the RangedConst value as a primitive type
             /// assuming that it is in range
             pub const fn value(&self) -> $type {
